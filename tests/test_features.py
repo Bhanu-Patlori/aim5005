@@ -84,6 +84,18 @@ class TestFeatures(TestCase):
         transformed_data = scaler.transform(data)
         assert np.allclose(fit_transform_data, transformed_data), "StandardScaler fit_transform check failed"
 
+    #This checks if the Standardscaler correctly handles negative values in the dataset
+    def test_standard_scaler_with_negative_values(self):
+        scaler = StandardScaler()
+        data = [[-2, -2], [-1, 1], [0, 0], [1, -1], [2, 2]]
+        scaler.fit(data)
+        transformed_data = scaler.transform(data)
+        
+        expected_mean = [0, 0]  
+        expected_std = [1, 1]  
+        
+        assert np.allclose(transformed_data.mean(axis=0), expected_mean), "Negative values are not correctly normalized by standardscaler: mean check failed"
+        assert np.allclose(transformed_data.std(axis=0), expected_std), "Negative values are not correctly normalized by standardscaler: std check failed"
 
 
 
